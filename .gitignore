@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+data/
+backups/
+.env
+.pytest_cache/
+TgBotReklama-*.zip
+TgBotReklama-*.tar.gz
+
+# Случайно распакованная копия проекта внутри корня
+/TgBotReklama/

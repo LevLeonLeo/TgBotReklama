@@ -17,6 +17,7 @@ from app.keyboards import (
 from app.models import AdCampaign
 from app.repo import FILLER_REFERRAL, PAID_CHANNEL, list_campaigns
 from app.states import AddCampaign
+from app.texts import campaign_kind_label
 from app.ui import safe_answer, safe_edit
 from app.utils import esc, normalize_url, truncate
 
@@ -48,9 +49,9 @@ async def add_campaign_start(callback: CallbackQuery, state: FSMContext) -> None
     await state.set_state(AddCampaign.kind)
     await _send(
         callback,
-        "Выберите тип кампании:\n\n"
-        "📣 <b>Платная реклама ТГК</b> — клик по ссылке обязателен.\n"
-        "🔁 <b>Затычка-рефералка</b> — клик не обязателен, серия открывается сразу.",
+        "Выберите тип рекламы:\n\n"
+        "📣 <b>Реклама ТГК</b> — клик по ссылке обязателен.\n"
+        "🔁 <b>Затычка</b> — клик не обязателен, серия открывается сразу.",
         campaign_kind_keyboard(),
     )
     await safe_answer(callback)
@@ -64,13 +65,13 @@ async def add_campaign_kind(callback: CallbackQuery, state: FSMContext) -> None:
         return
     await state.update_data(kind=kind)
     await state.set_state(AddCampaign.title)
-    await _send(callback, "Введите название кампании для админки:")
+    await _send(callback, "Введите название рекламы для админки:")
     await safe_answer(callback)
 
 
 @router.message(AddCampaign.kind)
 async def add_campaign_kind_invalid(message: Message) -> None:
-    await message.answer("Выберите тип кампании кнопкой выше.")
+    await message.answer("Выберите тип рекламы кнопкой выше.")
 
 
 @router.message(AddCampaign.title)
@@ -186,11 +187,11 @@ async def _create_campaign(
     await session.flush()
     await state.clear()
 
+    kind_label = campaign_kind_label(campaign.kind)
     click_note = "обязателен" if campaign.require_click else "не обязателен"
     await _reply(
         event,
-        f"✅ Кампания «{esc(truncate(title, 60))}» добавлена.\n"
-        f"Тип: <b>{kind}</b>\n"
+        f"✅ {kind_label} «{esc(truncate(title, 60))}» добавлена.\n"
         f"Клик: <b>{click_note}</b>\n\n"
         "Проверьте её с другого аккаунта.",
         admin_menu(),
@@ -206,13 +207,13 @@ async def admin_campaigns(
     if not campaigns:
         await safe_edit(
             callback,
-            "📣 <b>Кампании</b>\n\nПока нет ни одной кампании.",
+            "📣 <b>Реклама ТГК</b>\n\nПока нет ни одной рекламы.",
             admin_campaigns_keyboard([]),
         )
     else:
         await safe_edit(
             callback,
-            "📣 <b>Кампании</b>\n\nНажмите на кампанию, чтобы включить или выключить её.",
+            "📣 <b>Реклама ТГК</b>\n\nНажмите на рекламу, чтобы включить или выключить её.",
             admin_campaigns_keyboard(campaigns),
         )
     await safe_answer(callback)
@@ -230,14 +231,14 @@ async def admin_toggle_campaign(
         return
     campaign = await session.get(AdCampaign, campaign_id)
     if campaign is None:
-        await safe_answer(callback, "Кампания не найдена", show_alert=True)
+        await safe_answer(callback, "Реклама не найдена", show_alert=True)
         return
     campaign.is_active = not campaign.is_active
     await session.flush()
     campaigns = await list_campaigns(session)
     await safe_edit(
         callback,
-        "📣 <b>Кампании</b>\n\nНажмите на кампанию, чтобы включить или выключить её.",
+        "📣 <b>Реклама ТГК</b>\n\nНажмите на рекламу, чтобы включить или выключить её.",
         admin_campaigns_keyboard(campaigns),
     )
     await safe_answer(callback, "Включена" if campaign.is_active else "Выключена")

@@ -6,6 +6,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.config import settings
 from app.models import AdCampaign, Episode, Series
+from app.texts import campaign_kind_label
 from app.utils import truncate
 
 
@@ -117,7 +118,8 @@ def admin_menu() -> InlineKeyboardMarkup:
         [_btn("➕ Сериал", "admin:add_series"), _btn("➕ Серия", "admin:add_episode")],
         [_btn("🎬 Прикрепить видео", "admin:attach_video")],
         [_btn("📺 Сериалы", "admin:series_list")],
-        [_btn("➕ Кампания", "admin:add_campaign"), _btn("📣 Кампании", "admin:campaigns")],
+        [_btn("➕ Добавить рекламу", "admin:add_campaign")],
+        [_btn("📣 Реклама ТГК", "admin:campaigns")],
         [_btn("📊 Статистика", "admin:stats"), _btn("📖 Инструкция", "admin:help")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=rows)
@@ -164,7 +166,7 @@ def admin_campaigns_keyboard(campaigns: Iterable[AdCampaign]) -> InlineKeyboardM
         rows.append(
             [
                 _btn(
-                    f"{mark} {campaign.title} [{campaign.kind}]",
+                    f"{mark} {campaign.title} [{campaign_kind_label(campaign.kind)}]",
                     f"admin:tcampaign:{campaign.id}",
                 )
             ]
@@ -191,8 +193,8 @@ def free_keyboard() -> InlineKeyboardMarkup:
 def campaign_kind_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [_btn("📣 Платная реклама ТГК", "admin:ckind:paid_channel")],
-            [_btn("🔁 Затычка-рефералка", "admin:ckind:filler_referral")],
+            [_btn("📣 Реклама ТГК", "admin:ckind:paid_channel")],
+            [_btn("🔁 Затычка", "admin:ckind:filler_referral")],
             [_btn("⬅️ В админку", "admin:menu")],
         ]
     )

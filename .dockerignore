@@ -1,0 +1,11 @@
+.venv
+data
+backups
+.env
+__pycache__
+*.pyc
+.pytest_cache
+.git
+.gitignore
+TgBotReklama-*.tar.gz
+TgBotReklama-*.zip
