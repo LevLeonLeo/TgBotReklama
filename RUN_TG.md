@@ -1,4 +1,4 @@
-# Запуск TgBotReklama в Telegram
+# Запуск NarSerWatchBot в Telegram
 
 Пошаговая инструкция: от создания бота до рекламы ТГК и работы 24/7.
 Всё, что нужно, уже лежит в папке проекта. Никаких доменов, HTTPS, Docker и
@@ -28,9 +28,10 @@ python --version
 
 1. Откройте Telegram, найдите **@BotFather** (синяя галочка).
 2. Отправьте `/newbot`.
-3. Введите отображаемое имя, например `Мой сериальный бот`.
-4. Введите username, он должен заканчиваться на `bot`, например
-   `my_serial_2026_bot`.
+3. Введите отображаемое имя: `NarSerWatchBot`.
+4. Введите username: `NarSerWatchBot` (он должен заканчиваться на `bot`).
+   Если username занят, BotFather предложит другой — например,
+   `NarSerWatch_bot` или `NarSerWatchBot_bot`.
 5. BotFather пришлёт строку вида:
 
    ```text
@@ -38,6 +39,10 @@ python --version
    ```
 
    Это **BOT_TOKEN**. Никому его не показывайте: по нему можно управлять ботом.
+
+Если бот уже создан под другим именем, отправьте BotFather `/setname` —
+это отображаемое имя, и `/setusername` — это username. Токен при этом
+не меняется.
 
 Полезно сразу:
 
@@ -371,7 +376,7 @@ Telegram отклонил BOT_TOKEN...
 3. Чтобы бот запускался сам после входа в Windows:
    - нажмите `Win + R`, введите `taskschd.msc`, Enter;
    - **Создать задачу** (не «простую»);
-   - вкладка **Общие**: имя `TgBotReklama`, «Выполнять только при входе
+   - вкладка **Общие**: имя `NarSerWatchBot`, «Выполнять только при входе
      пользователя»;
    - вкладка **Триггеры** → **Создать** → «При входе в систему»;
    - вкладка **Действия** → **Создать** → «Запуск программы»;
@@ -429,7 +434,7 @@ sudo chown -R tgbot:tgbot /opt/TgBotReklama
 
 ```ini
 [Unit]
-Description=TgBotReklama
+Description=NarSerWatchBot
 After=network-online.target
 Wants=network-online.target
 

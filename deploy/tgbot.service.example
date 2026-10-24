@@ -1,5 +1,5 @@
 [Unit]
-Description=TgBotReklama Telegram bot
+Description=NarSerWatchBot Telegram bot
 After=network-online.target
 Wants=network-online.target
 

@@ -168,7 +168,7 @@ if [[ "$INSTALL_BACKUP_TIMER" == "1" ]]; then
     log "Ежедневный бэкап базы"
     cat > /etc/systemd/system/tgbot-backup.service <<EOF
 [Unit]
-Description=TgBotReklama database backup
+Description=NarSerWatchBot database backup
 After=${SERVICE_NAME}.service
 
 [Service]
@@ -181,7 +181,7 @@ EOF
 
     cat > /etc/systemd/system/tgbot-backup.timer <<EOF
 [Unit]
-Description=Daily TgBotReklama backup
+Description=Daily NarSerWatchBot backup
 
 [Timer]
 OnCalendar=*-*-* 03:30:00
