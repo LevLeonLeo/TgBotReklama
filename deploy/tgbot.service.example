@@ -1,0 +1,22 @@
+[Unit]
+Description=TgBotReklama Telegram bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Замените на пользователя, от которого будет работать бот
+User=tgbot
+Group=tgbot
+WorkingDirectory=/opt/TgBotReklama
+ExecStart=/opt/TgBotReklama/.venv/bin/python /opt/TgBotReklama/run.py
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONUTF8=1
+# Логи также пишутся в /opt/TgBotReklama/data/bot.log
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
